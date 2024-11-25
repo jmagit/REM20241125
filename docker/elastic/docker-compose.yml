@@ -1,0 +1,59 @@
+networks:
+  default:
+    name: elastic
+    external: false
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    container_name: elasticsearch
+    labels:
+      co.elastic.logs/module: elasticsearch
+    ports:
+      - ${ES_PORT}:9200
+    environment:
+      - node.name=elasticsearch
+      - cluster.name=${CLUSTER_NAME}
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - xpack.license.self_generated.type=${LICENSE}
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  kibana:
+    depends_on:
+      - elasticsearch
+    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+    container_name: kibana
+    labels:
+      co.elastic.logs/module: kibana
+    ports:
+      - ${KIBANA_PORT}:5601
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    mem_limit: ${KB_MEM_LIMIT}
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
+    container_name: logstash
+    command: --config.reload.automatic --log.level=debug --enable-local-plugin-development
+    ports:
+      - "9600:9600"
+    environment:
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_HOSTS=http://elasticsearch:9200
+    volumes:
+      - ./data:/usr/share/logstash/data
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml
+      - "./logstash/pipeline:/usr/share/logstash/pipeline:ro"
+      - ./logstash/lib:/usr/share/logstash/pipeline_lib
+      - "./logstash/ingest_data/:/usr/share/logstash/ingest_data/"
+    depends_on:
+      - elasticsearch
