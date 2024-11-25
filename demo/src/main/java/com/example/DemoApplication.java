@@ -20,10 +20,16 @@ public class DemoApplication implements CommandLineRunner {
 
 	@Bean
 	@Order(1)
-	CommandLineRunner otro() {
+	CommandLineRunner ioc() {
 		return arg -> {
-			// System.err.println("Otro");
-			
+//			Servicio srv = new ServicioImpl(new RepositorioImpl(new ConfiguracionImpl()));
+//			var contexto = new AnnotationConfigApplicationContext(AppConfig.class);
+////			Servicio srv = contexto.getBean(Servicio.class);
+////			srv.add();
+////			contexto.getBean(ClaseNoComponente.class).saluda();
+////			contexto.getBean(NotificationService.class).getListado().forEach(System.out::println);
+////			contexto.getBean(Sender.class).send("un mensaje");
+//			contexto.close();
 		};
 	}
 }
