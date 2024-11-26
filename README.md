@@ -10,10 +10,10 @@
   - [HeidiSQL](https://www.heidisql.com/download.php)
   - [MongoDB Compass](https://www.mongodb.com/try/download/compass)
 
-## Paquetes Java
+## Paquetes Java (descargar y descomprimir)
 
-- https://downloads.mysql.com/archives/get/p/3/file/mysql-connector-java-5.1.49.zip  
-- https://sourceforge.net/projects/hibernate/files/hibernate-orm/5.6.5.Final/hibernate-release-5.6.5.Final.zip/download
+- <https://downloads.mysql.com/archives/get/p/3/file/mysql-connector-java-5.1.49.zip>
+- <https://www.eclipse.org/downloads/download.php?file=/rt/eclipselink/releases/4.0.4/eclipselink-4.0.4.v20240715-059428cdd2.zip>
 
 ## Base de datos de ejemplos
 
