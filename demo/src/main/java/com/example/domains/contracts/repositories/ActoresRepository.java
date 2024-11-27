@@ -11,11 +11,16 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.example.domains.core.contracts.repositories.ProjectionsAndSpecificationJpaRepository;
+import com.example.domains.core.contracts.repositories.RepositoryWithProjections;
 import com.example.domains.entities.Actor;
+import com.example.domains.entities.models.ActorDTO;
+import com.example.domains.entities.models.ActorShort;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.NotFoundException;
 
-public interface ActoresRepository extends JpaRepository<Actor, Integer>, JpaSpecificationExecutor<Actor> {
+public interface ActoresRepository extends ProjectionsAndSpecificationJpaRepository<Actor, Integer> {
+	// JpaRepository<Actor, Integer>, JpaSpecificationExecutor<Actor>, RepositoryWithProjections {
 	List<Actor> findTop5ByFirstNameStartingWithIgnoreCaseOrderByLastNameDesc(String prefijo);
 	List<Actor> findTop5ByFirstNameStartingWithIgnoreCase(String prefijo, Sort orderBy);
 	
@@ -26,6 +31,10 @@ public interface ActoresRepository extends JpaRepository<Actor, Integer>, JpaSpe
 	List<Actor> findByJPQL(int actorId);
 	@Query(value = "SELECT * FROM actor WHERE actor_id > :id", nativeQuery = true)
 	List<Actor> findBySQL(@Param("id") int actorId);
+
+	List<ActorDTO> queryByActorIdGreaterThan(int actorId);
+	List<ActorShort> readByActorIdGreaterThan(int actorId);
+	<T> List<T> searchByActorIdGreaterThan(int actorId, Class<T> proyeccion);
 	
 	@Override
 	@EntityGraph(attributePaths = {"filmActors", "filmActors.film"})

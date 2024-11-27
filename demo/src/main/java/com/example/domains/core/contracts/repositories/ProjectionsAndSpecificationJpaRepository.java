@@ -12,11 +12,11 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
 public interface ProjectionsAndSpecificationJpaRepository<E, ID> 
-	extends JpaRepository<E, ID>, JpaSpecificationExecutor<E> {
-//	@RestResource(exported = false)
-	<T> List<T> findAllBy(Class<T> tipo);
-//	@RestResource(exported = false)
-	<T> List<T> findAllBy(Sort orden, Class<T> tipo);
-//	@RestResource(exported = false)
-	<T> Page<T> findAllBy(Pageable page, Class<T> tipo);
+	extends JpaRepository<E, ID>, JpaSpecificationExecutor<E>, RepositoryWithProjections {
+////	@RestResource(exported = false)
+//	<T> List<T> findAllBy(Class<T> tipo);
+////	@RestResource(exported = false)
+//	<T> List<T> findAllBy(Sort orden, Class<T> tipo);
+////	@RestResource(exported = false)
+//	<T> Page<T> findAllBy(Pageable page, Class<T> tipo);
 }

@@ -11,6 +11,10 @@ import org.springframework.data.domain.Sort;
 
 import com.example.domains.contracts.repositories.ActoresRepository;
 import com.example.domains.entities.Actor;
+import com.example.domains.entities.models.ActorDTO;
+import com.example.domains.entities.models.ActorShort;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
 
@@ -75,7 +79,38 @@ public class DemoApplication implements CommandLineRunner {
 //			} else {
 //				System.err.println("No encontrado ");
 //			}
-
+//			dao.findByActorIdGreaterThan(195).forEach(item -> System.out.println(ActorDTO.from(item)));
+//			dao.queryByActorIdGreaterThan(195).forEach(System.out::println);
+//			dao.readByActorIdGreaterThan(195).forEach(item -> System.out.println(item.getActorId() + " " + item.getNombre()));
+//			dao.searchByActorIdGreaterThan(195, ActorDTO.class).forEach(System.out::println);
+//			dao.searchByActorIdGreaterThan(195, ActorShort.class).forEach(item -> System.out.println(item.getActorId() + " " + item.getNombre()));
+//			dao.findAllBy(ActorDTO.class).forEach(System.out::println);
+			var json = new ObjectMapper();
+			dao.searchByActorIdGreaterThan(195, ActorDTO.class).forEach(item -> {
+				try {
+					System.out.println(json.writeValueAsString(item));
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+			var xml = new com.fasterxml.jackson.dataformat.xml.XmlMapper();
+			dao.searchByActorIdGreaterThan(195, ActorDTO.class).forEach(item -> {
+				try {
+					System.out.println(xml.writeValueAsString(item));
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+			dao.findByActorIdGreaterThan(195).forEach(item -> {
+				try {
+					System.out.println(json.writeValueAsString(item));
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
 		};
 	}
 	

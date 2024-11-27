@@ -20,62 +20,82 @@ public class ActoresServiceImpl implements ActoresService {
 	private ActoresRepository dao;
 	
 	public ActoresServiceImpl(ActoresRepository dao) {
-		super();
 		this.dao = dao;
 	}
 
 	@Override
+	public <T> List<T> getByProjection(Class<T> type) {
+		return dao.findAllBy(type);
+	}
+
+	@Override
+	public <T> Iterable<T> getByProjection(Sort sort, Class<T> type) {
+		return dao.findAllBy(sort, type);
+	}
+
+	@Override
+	public <T> Page<T> getByProjection(Pageable pageable, Class<T> type) {
+		return dao.findAllBy(pageable, type);
+	}
+
+	@Override
 	public Iterable<Actor> getAll(Sort sort) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.findAll(sort);
 	}
 
 	@Override
 	public Page<Actor> getAll(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.findAll(pageable);
 	}
 
 	@Override
 	public List<Actor> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.findAll();
 	}
 
 	@Override
 	public Optional<Actor> getOne(Integer id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		return dao.findById(id);
 	}
 
 	@Override
 	public Actor add(Actor item) throws DuplicateKeyException, InvalidDataException {
-		// TODO Auto-generated method stub
-		return null;
+		if(item == null)
+			throw new InvalidDataException("No puede ser nulo");
+		if(item.isInvalid())
+			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
+		if(item.getActorId() != 0 && dao.existsById(item.getActorId()))
+			throw new DuplicateKeyException("Ya existe");
+		return dao.save(item);
 	}
 
 	@Override
 	public Actor modify(Actor item) throws NotFoundException, InvalidDataException {
-		// TODO Auto-generated method stub
-		return null;
+		if(item == null)
+			throw new InvalidDataException("No puede ser nulo");
+		if(item.isInvalid())
+			throw new InvalidDataException(item.getErrorsMessage(), item.getErrorsFields());
+		if(!dao.existsById(item.getActorId()))
+			throw new NotFoundException();
+		return dao.save(item);
 	}
 
 	@Override
 	public void delete(Actor item) throws InvalidDataException {
-		// TODO Auto-generated method stub
-
+		if(item == null)
+			throw new InvalidDataException("No puede ser nulo");
+		dao.delete(item);
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
-
+		dao.deleteById(id);
 	}
 
 	@Override
-	public void repartirPremios(List<String> premios) {
+	public void repartePremios() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }
