@@ -29,7 +29,7 @@ public class ApiExceptionHandler {
 	}
 
 	@ExceptionHandler({ BadRequestException.class, DuplicateKeyException.class, HttpMessageNotReadableException.class })
-	public Mono<ProblemDetail>  badRequest(Exception exception) {
+	public Mono<ProblemDetail> badRequest(Exception exception) {
 		log.error("Bad Request exception", exception);
 		return Mono.just(ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage()));
 	}
@@ -57,10 +57,10 @@ public class ApiExceptionHandler {
 //	}
 
 
-//	@ExceptionHandler({ Exception.class })
-//	public Mono<ProblemDetail>  unknow(Exception exception) {
-//		log.error("Unhandled exception", exception);
-//		return Mono.just(ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage()));
-//	}
+	@ExceptionHandler({ Exception.class })
+	public Mono<ProblemDetail>  unknow(Exception exception) {
+		log.error("Unhandled exception", exception);
+		return Mono.just(ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage()));
+	}
 
 }
