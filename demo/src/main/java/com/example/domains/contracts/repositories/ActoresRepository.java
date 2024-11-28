@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import com.example.domains.core.contracts.repositories.ProjectionsAndSpecificationJpaRepository;
 import com.example.domains.core.contracts.repositories.RepositoryWithProjections;
@@ -34,6 +35,7 @@ public interface ActoresRepository extends ProjectionsAndSpecificationJpaReposit
 
 	List<ActorDTO> queryByActorIdGreaterThan(int actorId);
 	List<ActorShort> readByActorIdGreaterThan(int actorId);
+	@RestResource(exported = false)
 	<T> List<T> searchByActorIdGreaterThan(int actorId, Class<T> proyeccion);
 	
 	@Override

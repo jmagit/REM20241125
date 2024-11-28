@@ -75,9 +75,9 @@ public class Actor extends AbstractEntity<Actor> implements Serializable {
 
 	public Actor(int actorId, String firstName, String lastName) {
 		super();
-		this.actorId = actorId;
-		this.firstName = firstName;
-		this.lastName = lastName;
+		setActorId(actorId);
+		setFirstName(firstName);
+		setLastName(lastName);
 	}
 
 
