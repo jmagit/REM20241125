@@ -149,7 +149,7 @@ public class MeGustaService {
 	@Autowired
 	private ReactiveRedisTemplate<String, Pelicula> peliculaRedisTemplate;
 	
-//	@JsonTypeInfo(include = As.PROPERTY, use=Id.CLASS, property = "_class")
+//	@JsonTypeInfo(use=Id.CLASS, include = As.PROPERTY, property = "_class")
 	public static record Pelicula(int id, String titulo) {}
 
 	@GetMapping("/object/set")
@@ -163,8 +163,8 @@ public class MeGustaService {
 	@Operation(summary = "Recupera en demo-object un objeto serializado")
 	private Pelicula getJson() {
 //		return peliculaRedisTemplate.opsForValue().get("demo-object").map(p-> (Pelicula)p).block();
-		return react.opsForValue().get("demo-object").map(p-> (Pelicula)p).block();
-//		return react.opsForValue(RedisConfig.getRedisSerializationContext(Pelicula.class)).get("demo-object").map(p-> (Pelicula)p).block();
+//		return react.opsForValue().get("demo-object").map(p-> (Pelicula)p).block();
+		return react.opsForValue(RedisConfig.getRedisSerializationContext(Pelicula.class)).get("demo-object").map(p-> (Pelicula)p).block();
 	}
 	@GetMapping("/titulos/{id}")
 	@Operation(summary = "Recupera el titulo de una pelicula")

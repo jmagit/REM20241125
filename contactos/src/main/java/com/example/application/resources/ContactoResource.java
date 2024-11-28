@@ -108,7 +108,7 @@ public class ContactoResource {
 		if (item.getId() != null && dao.findById(item.getId()).isPresent())
 			throw new InvalidDataException("Duplicate key");
 		item.setId(null);
-		dao.save(item); // ConstraintViolationException
+		dao.insert(item); // ConstraintViolationException
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(item.getId())
 				.toUri();
 		return ResponseEntity.created(location).build();

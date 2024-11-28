@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
@@ -40,7 +41,7 @@ public class Contacto {
 	private String avatar;
 	private boolean conflictivo = false;
 	private String icono;
-	private List<Direccion> direcciones;
+	private List<@Valid Direccion> direcciones;
 
 	public Contacto() {
 		super();

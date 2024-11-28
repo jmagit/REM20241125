@@ -50,9 +50,9 @@ public class RedisConfig {
 	private static <T> Jackson2JsonRedisSerializer<T> jsonRedisSerializer(Class<T> type) {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-		if("java.lang.Object".equals(type.getCanonicalName()))
-			mapper.activateDefaultTypingAsProperty(mapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.EVERYTHING, "_class");
-		else
+//		if("java.lang.Object".equals(type.getCanonicalName()))
+//			mapper.activateDefaultTypingAsProperty(mapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.EVERYTHING, "_class");
+//		else
 			mapper.activateDefaultTyping(mapper.getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL);
 		return new Jackson2JsonRedisSerializer<>(mapper, type);
 	}
