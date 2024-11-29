@@ -66,18 +66,18 @@ public class AsyncKafkaSensorApplication implements CommandLineRunner {
 
 	ObjectMapper converter = new ObjectMapper();
 
-	@Scheduled(fixedDelay = 1000)
-	private void telemetria() throws JsonProcessingException {
-		sendEvent(topicTelemetria.name(), idSensor, converter.writeValueAsString(TelemetryEvent.up(idSensor)));
-	}
-
-//	@Autowired
-//	KafkaTemplate<String, TelemetryEvent> telemetriaTemplate;
-//
 //	@Scheduled(fixedDelay = 1000)
 //	private void telemetria() throws JsonProcessingException {
-//		telemetriaTemplate.sendDefault(idSensor, TelemetryEvent.up(idSensor));
+//		sendEvent(topicTelemetria.name(), idSensor, converter.writeValueAsString(TelemetryEvent.up(idSensor)));
 //	}
+
+	@Autowired
+	KafkaTemplate<String, TelemetryEvent> telemetriaTemplate;
+
+	@Scheduled(fixedDelay = 1000)
+	private void telemetria() throws JsonProcessingException {
+		telemetriaTemplate.sendDefault(idSensor, TelemetryEvent.up(idSensor));
+	}
 
 	@Autowired
 	KafkaTemplate<String, String> kafkaTemplate;
