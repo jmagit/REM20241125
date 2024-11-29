@@ -21,7 +21,7 @@ public class RepositorioImpl implements Repositorio {
 	public RepositorioImpl(Configuracion configuracion, NotificationService notify) {
 		notify.add(getClass().getSimpleName() + " Constructor");
 		this.configuracion = configuracion;
-		configuracion.config();
+		// configuracion.config();
 	}
 
 

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 
 import com.example.domains.core.contracts.repositories.ProjectionsAndSpecificationJpaRepository;
@@ -20,6 +21,7 @@ import com.example.domains.entities.models.ActorShort;
 import com.example.exceptions.DuplicateKeyException;
 import com.example.exceptions.NotFoundException;
 
+@RepositoryRestResource(exported = false)
 public interface ActoresRepository extends ProjectionsAndSpecificationJpaRepository<Actor, Integer> {
 	// JpaRepository<Actor, Integer>, JpaSpecificationExecutor<Actor>, RepositoryWithProjections {
 	List<Actor> findTop5ByFirstNameStartingWithIgnoreCaseOrderByLastNameDesc(String prefijo);

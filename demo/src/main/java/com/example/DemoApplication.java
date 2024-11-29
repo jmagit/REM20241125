@@ -1,33 +1,57 @@
 package com.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.annotation.Order;
-import org.springframework.data.domain.Sort;
+import org.springframework.context.annotation.Primary;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.domains.contracts.repositories.ActoresRepository;
-import com.example.domains.entities.Actor;
-import com.example.domains.entities.models.ActorDTO;
-import com.example.domains.entities.models.ActorShort;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.transaction.Transactional;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients("com.example.application.proxies")
+@SecurityScheme(name = "bearerAuth", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
 public class DemoApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-	@Autowired
-	ActoresRepository dao;
-	
+	@Bean
+	@Primary
+	RestTemplate restTemplate(RestTemplateBuilder builder) {
+		return builder.build();
+	}
+
+	@Bean
+	@LoadBalanced
+	RestTemplate restTemplateLB(RestTemplateBuilder builder) {
+		return builder.build();
+	}
+
+	@LoadBalanced
+	@Bean
+	RestClient.Builder restClientBuilderLB() {
+		return RestClient.builder();
+	}
+
+	@Primary
+	@Bean
+	RestClient.Builder restClientBuilder() {
+		return RestClient.builder();
+	}
+
 	@Override
 //	@Transactional
 	public void run(String... args) throws Exception {
@@ -36,10 +60,11 @@ public class DemoApplication implements CommandLineRunner {
 //		list.forEach(a -> {
 //			System.out.println(a + " peliculas: " + a.getFilmActors().size());
 //			a.getFilmActors().forEach(p -> System.out.println("\t" + p.getFilm().getTitle()));
-//		});
-		
-		
+//		});		
 	}
+
+	@Autowired
+	ActoresRepository dao;
 
 	@Bean
 	CommandLineRunner datos(ActoresRepository dao) {
@@ -85,35 +110,35 @@ public class DemoApplication implements CommandLineRunner {
 //			dao.searchByActorIdGreaterThan(195, ActorDTO.class).forEach(System.out::println);
 //			dao.searchByActorIdGreaterThan(195, ActorShort.class).forEach(item -> System.out.println(item.getActorId() + " " + item.getNombre()));
 //			dao.findAllBy(ActorDTO.class).forEach(System.out::println);
-			var json = new ObjectMapper();
-			dao.searchByActorIdGreaterThan(195, ActorDTO.class).forEach(item -> {
-				try {
-					System.out.println(json.writeValueAsString(item));
-				} catch (JsonProcessingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
-			var xml = new com.fasterxml.jackson.dataformat.xml.XmlMapper();
-			dao.searchByActorIdGreaterThan(195, ActorDTO.class).forEach(item -> {
-				try {
-					System.out.println(xml.writeValueAsString(item));
-				} catch (JsonProcessingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
-			dao.findByActorIdGreaterThan(195).forEach(item -> {
-				try {
-					System.out.println(json.writeValueAsString(item));
-				} catch (JsonProcessingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
+//			var json = new ObjectMapper();
+//			dao.searchByActorIdGreaterThan(195, ActorDTO.class).forEach(item -> {
+//				try {
+//					System.out.println(json.writeValueAsString(item));
+//				} catch (JsonProcessingException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			});
+//			var xml = new com.fasterxml.jackson.dataformat.xml.XmlMapper();
+//			dao.searchByActorIdGreaterThan(195, ActorDTO.class).forEach(item -> {
+//				try {
+//					System.out.println(xml.writeValueAsString(item));
+//				} catch (JsonProcessingException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			});
+//			dao.findByActorIdGreaterThan(195).forEach(item -> {
+//				try {
+//					System.out.println(json.writeValueAsString(item));
+//				} catch (JsonProcessingException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			});
 		};
 	}
-	
+
 //	@Value("${mi.valor:Valor por defecto}")
 //	private String config;
 //	
